@@ -1,0 +1,202 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "DLS Games API",
+    "version": "1.0.0",
+    "description": "API para compra e venda de jogos de video game."
+  },
+  "paths": {
+    "/seller/register": {
+      "post": {
+        "summary": "Registrar vendedor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["name", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Vendedor registrado com sucesso", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Seller" } } } },
+          "400": { "description": "Campos obrigatórios ausentes" },
+          "409": { "description": "Email já registrado" }
+        }
+      }
+    },
+    "/seller/login": {
+      "post": {
+        "summary": "Login vendedor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Login" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login bem-sucedido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Token" } } } },
+          "401": { "description": "Credenciais inválidas" }
+        }
+      }
+    },
+    "/buyer/register": {
+      "post": {
+        "summary": "Registrar comprador",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["name", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Comprador registrado com sucesso", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Buyer" } } } },
+          "400": { "description": "Campos obrigatórios ausentes" },
+          "409": { "description": "Email já registrado" }
+        }
+      }
+    },
+    "/buyer/login": {
+      "post": {
+        "summary": "Login comprador",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Login" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login bem-sucedido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Token" } } } },
+          "401": { "description": "Credenciais inválidas" }
+        }
+      }
+    },
+    "/games": {
+      "post": {
+        "summary": "Cadastrar jogo (vendedor)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "price": { "type": "number" }
+                },
+                "required": ["title", "description", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Jogo cadastrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Game" } } } },
+          "400": { "description": "Campos obrigatórios ausentes" },
+          "403": { "description": "Acesso negado: apenas vendedor" },
+          "401": { "description": "Token inválido ou ausente" }
+        }
+      },
+      "get": {
+        "summary": "Listar jogos (comprador)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Lista de jogos", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Game" } } } } },
+          "403": { "description": "Acesso negado: apenas comprador" },
+          "401": { "description": "Token inválido ou ausente" }
+        }
+      }
+    },
+    "/games/search": {
+      "get": {
+        "summary": "Buscar jogos (comprador)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "q", "in": "query", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Jogos encontrados", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Game" } } } } },
+          "400": { "description": "Query de busca ausente" },
+          "403": { "description": "Acesso negado: apenas comprador" },
+          "401": { "description": "Token inválido ou ausente" }
+        }
+      }
+    },
+    "/docs": {
+      "get": {
+        "summary": "Renderizar Swagger UI",
+        "responses": {
+          "200": { "description": "Swagger UI" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Seller": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "Buyer": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "Game": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number" }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
