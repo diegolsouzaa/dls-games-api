@@ -5,14 +5,13 @@ describe('Create Game - /game', () => {
     before(() => {
         createSellerAndGetToken().then((token) => {
             Cypress.env('tokenSeller', token);
-            cy.log('Token Seller ->>>>>>>>>>> ' + token);
-        });
+        })
     })
 
     it('Should create a new game', () => {
         const payload = {
-            title: 'Game Title',
-            year: 2022,
+            title: "New Game Cypress",
+            description: "nao sei",
             price: 59.99
         }
         cy.then(() => {
@@ -26,13 +25,8 @@ describe('Create Game - /game', () => {
                 }
             }).then((response) => {
                 expect(response.status).to.eq(201)
-                cy.log('Game ID: ' + response.body.id)
-                cy.log('Game Title: ' + response.body.title)
             })
-
         });
-
     })
+
 })
-
-
