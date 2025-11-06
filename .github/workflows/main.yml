@@ -1,0 +1,14 @@
+name: CI dls-games-api
+
+#gatilhos
+on:
+  workflow_dispatch:
+
+jobs:
+  tests: 
+
+    runs-on: ubuntu-latest
+
+    env: 
+      
+
