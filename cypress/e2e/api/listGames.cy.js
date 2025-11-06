@@ -12,6 +12,7 @@ describe('List Games - /games', () => {
 
     it('Should list all games', () => {
         const token = Cypress.env('tokenBuyer');
+        
         cy.request({
             method: 'GET',
             url: '/games',
