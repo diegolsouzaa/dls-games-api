@@ -18,9 +18,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install swagger and jwt
-        run: npm install express swagger-ui-express jsonwebtoken
-
       - name: Execute project
         run: node app.js &
 
