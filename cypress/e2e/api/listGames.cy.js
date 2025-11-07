@@ -25,6 +25,4 @@ describe('List Games - /games', () => {
         })
     })
 
-
-
 })
