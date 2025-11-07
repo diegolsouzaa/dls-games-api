@@ -100,10 +100,6 @@ export function createGame() {
             Cypress.env('game', response.body);
             return response.body;
         });
-
-
     })
-
-
 
 }

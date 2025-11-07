@@ -35,7 +35,6 @@ describe('API - Login', () => {
             expect(response.status).to.eq(200)
             expect(response.body).to.have.property('token')
             Cypress.env('token', response.body.token)
-            cy.log('Token armazenado:', response.body.token)
         })
     })
 })
